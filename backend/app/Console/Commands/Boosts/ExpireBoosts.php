@@ -3,14 +3,14 @@
 namespace App\Console\Commands\Boosts;
 
 use App\Models\Boost;
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('boosts:expire')]
-#[Description("Expire les boosts arrivés à échéance et retire l'effet de mise en avant des annonces concernées.")]
 class ExpireBoosts extends Command
 {
+    protected $signature = 'boosts:expire';
+
+    protected $description = "Expire les boosts arrivés à échéance et retire l'effet de mise en avant des annonces concernées.";
+
     public function handle(): int
     {
         $expired = Boost::query()

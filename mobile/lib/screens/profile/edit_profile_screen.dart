@@ -190,7 +190,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
           const SizedBox(height: 12),
           DropdownButtonFormField<City>(
-            initialValue: _city,
+            value: _city,
             decoration: const InputDecoration(labelText: 'Ville'),
             items: catalog.cities
                 .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))

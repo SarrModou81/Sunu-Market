@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable([
-    'product_id', 'buyer_id', 'seller_id', 'buyer_last_read_at', 'seller_last_read_at',
-    'blocked_by_buyer', 'blocked_by_seller', 'last_message_at',
-])]
 class Conversation extends Model
 {
+    protected $fillable = [
+        'product_id', 'buyer_id', 'seller_id', 'buyer_last_read_at', 'seller_last_read_at',
+        'blocked_by_buyer', 'blocked_by_seller', 'last_message_at',
+    ];
+
     protected function casts(): array
     {
         return [

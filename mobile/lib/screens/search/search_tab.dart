@@ -151,7 +151,7 @@ class _SearchTabState extends State<SearchTab> {
               children: [
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    initialValue: _filters.sort,
+                    value: _filters.sort,
                     isDense: true,
                     decoration: const InputDecoration(
                       labelText: 'Trier par',

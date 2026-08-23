@@ -9,7 +9,7 @@ Cahier des charges de référence : [`docs/Cahier_des_charges_Marketplace_Senega
 ## Structure du monorepo
 
 ```
-backend/   API REST Laravel (PHP 8.4) + PostgreSQL + Sanctum
+backend/   API REST Laravel (PHP 8.2+) + PostgreSQL + Sanctum
 mobile/    Application mobile Flutter
 docs/      Cahier des charges, architecture, notes de phase
 ```

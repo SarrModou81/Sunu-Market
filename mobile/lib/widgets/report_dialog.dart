@@ -38,7 +38,7 @@ class _ReportDialogState extends State<ReportDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DropdownButtonFormField<String>(
-              initialValue: _reason,
+              value: _reason,
               decoration: const InputDecoration(labelText: 'Motif'),
               items: reportReasonLabels.entries
                   .map(

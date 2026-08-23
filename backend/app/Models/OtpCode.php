@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['phone', 'code_hash', 'purpose', 'expires_at', 'consumed_at', 'attempts', 'ip_address'])]
 class OtpCode extends Model
 {
+    protected $fillable = ['phone', 'code_hash', 'purpose', 'expires_at', 'consumed_at', 'attempts', 'ip_address'];
+
     public const PURPOSE_REGISTER = 'register';
 
     public const PURPOSE_LOGIN = 'login';

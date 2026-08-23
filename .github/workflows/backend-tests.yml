@@ -28,7 +28,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: '8.2'
           coverage: none
 
       - name: Install Composer dependencies
@@ -38,8 +38,13 @@ jobs:
         run: ./vendor/bin/pint --test
 
   tests:
-    name: Tests (PostgreSQL)
+    name: Tests (PostgreSQL, PHP ${{ matrix.php-version }})
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.2', '8.4']
 
     services:
       postgres:
@@ -62,7 +67,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: ${{ matrix.php-version }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_pgsql, gd
           coverage: none
 

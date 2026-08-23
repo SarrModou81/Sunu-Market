@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,14 +9,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable([
-    'user_id', 'category_id', 'subcategory_id', 'title', 'slug', 'brand', 'description',
-    'price', 'quantity', 'condition', 'city_id', 'neighborhood_id', 'delivery_available',
-    'status', 'rejection_reason', 'published_at', 'expires_at', 'boosted_until',
-    'views_count', 'contacts_count',
-])]
 class Product extends Model
 {
+    protected $fillable = [
+        'user_id', 'category_id', 'subcategory_id', 'title', 'slug', 'brand', 'description',
+        'price', 'quantity', 'condition', 'city_id', 'neighborhood_id', 'delivery_available',
+        'status', 'rejection_reason', 'published_at', 'expires_at', 'boosted_until',
+        'views_count', 'contacts_count',
+    ];
+
     use HasFactory, SoftDeletes;
 
     public const STATUS_DRAFT = 'BROUILLON';

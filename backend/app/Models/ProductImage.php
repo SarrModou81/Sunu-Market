@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['product_id', 'path', 'disk', 'position', 'is_primary'])]
 class ProductImage extends Model
 {
+    protected $fillable = ['product_id', 'path', 'disk', 'position', 'is_primary'];
+
     protected function casts(): array
     {
         return [
