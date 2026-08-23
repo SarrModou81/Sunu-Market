@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CityResource extends JsonResource
+class SubcategoryResource extends JsonResource
 {
     /**
      * @return array<string, mixed>
@@ -15,10 +15,8 @@ class CityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'region' => $this->region,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'neighborhoods' => NeighborhoodResource::collection($this->whenLoaded('neighborhoods')),
+            'slug' => $this->slug,
+            'position' => $this->position,
         ];
     }
 }

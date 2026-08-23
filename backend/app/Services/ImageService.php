@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\JpegEncoder;
 use Intervention\Image\ImageManager;
 
 class ImageService
@@ -23,7 +24,7 @@ class ImageService
      */
     public function storeCompressed(UploadedFile $file, string $directory, string $disk = 'public', int $maxWidth = 1600, int $quality = 75): string
     {
-        $image = $this->manager->read($file->getRealPath());
+        $image = $this->manager->decode($file->getRealPath());
 
         if ($image->width() > $maxWidth) {
             $image->scale(width: $maxWidth);
@@ -31,7 +32,7 @@ class ImageService
 
         $filename = $directory.'/'.Str::uuid()->toString().'.jpg';
 
-        Storage::disk($disk)->put($filename, (string) $image->toJpeg($quality));
+        Storage::disk($disk)->put($filename, (string) $image->encode(new JpegEncoder($quality)));
 
         return $filename;
     }
