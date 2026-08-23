@@ -6,8 +6,13 @@ use App\Http\Controllers\Api\Auth\OtpController;
 use App\Http\Controllers\Api\Auth\ProfileController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\ConversationController;
+use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductImageController;
+use App\Http\Controllers\Api\ReportController;
+use App\Http\Controllers\Api\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -48,6 +53,28 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('products/{product}', [ProductController::class, 'destroy']);
     Route::delete('products/{product}/images/{image}', [ProductImageController::class, 'destroy']);
     Route::post('products/{product}/images/{image}/primary', [ProductImageController::class, 'setPrimary']);
+});
+
+Route::get('sellers/{seller}/reviews', [ReviewController::class, 'index']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('favorites', [FavoriteController::class, 'index']);
+    Route::post('favorites', [FavoriteController::class, 'store']);
+    Route::delete('favorites/{product}', [FavoriteController::class, 'destroy']);
+
+    Route::get('conversations', [ConversationController::class, 'index']);
+    Route::post('conversations', [ConversationController::class, 'store']);
+    Route::get('conversations/{conversation}', [ConversationController::class, 'show']);
+    Route::post('conversations/{conversation}/messages', [ConversationController::class, 'sendMessage']);
+    Route::post('conversations/{conversation}/block', [ConversationController::class, 'toggleBlock']);
+
+    Route::post('sellers/{seller}/reviews', [ReviewController::class, 'store']);
+
+    Route::post('reports', [ReportController::class, 'store']);
+
+    Route::get('notifications', [NotificationController::class, 'index']);
+    Route::post('notifications/{notification}/read', [NotificationController::class, 'markRead']);
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllRead']);
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
