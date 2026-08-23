@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\AdminLogController;
 use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Api\Admin\PaymentController as AdminPaymentController;
+use App\Http\Controllers\Api\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Api\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\Api\Admin\StatsController;
+use App\Http\Controllers\Api\Admin\SubscriptionController as AdminSubscriptionController;
+use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\OtpController;
 use App\Http\Controllers\Api\Auth\ProfileController;
@@ -105,10 +112,31 @@ Route::middleware('throttle:120,1')->group(function () {
     Route::post('webhooks/orange-money', [WebhookController::class, 'orangeMoney'])->name('webhooks.orange-money');
 });
 
-Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth:sanctum', 'admin:moderator'])->prefix('admin')->group(function () {
+    Route::get('stats', [StatsController::class, 'index']);
+
     Route::get('categories', [AdminCategoryController::class, 'index']);
     Route::post('categories', [AdminCategoryController::class, 'store']);
     Route::put('categories/{category}', [AdminCategoryController::class, 'update']);
     Route::delete('categories/{category}', [AdminCategoryController::class, 'destroy']);
     Route::post('categories/{category}/subcategories', [AdminCategoryController::class, 'storeSubcategory']);
+
+    Route::get('users', [AdminUserController::class, 'index']);
+    Route::get('users/{user}', [AdminUserController::class, 'show']);
+    Route::patch('users/{user}/status', [AdminUserController::class, 'updateStatus']);
+    Route::patch('users/{user}/role', [AdminUserController::class, 'updateRole']);
+    Route::patch('users/{user}/seller-verification', [AdminUserController::class, 'updateSellerVerification']);
+
+    Route::get('products', [AdminProductController::class, 'index']);
+    Route::post('products/{product}/approve', [AdminProductController::class, 'approve']);
+    Route::post('products/{product}/refuse', [AdminProductController::class, 'refuse']);
+    Route::post('products/{product}/block', [AdminProductController::class, 'block']);
+
+    Route::get('reports', [AdminReportController::class, 'index']);
+    Route::post('reports/{report}/resolve', [AdminReportController::class, 'resolve']);
+
+    Route::get('payments', [AdminPaymentController::class, 'index']);
+    Route::get('subscriptions', [AdminSubscriptionController::class, 'index']);
+
+    Route::get('logs', [AdminLogController::class, 'index']);
 });
