@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-#[Fillable(['product_id', 'user_id', 'boost_plan_id', 'status', 'starts_at', 'ends_at'])]
+#[Fillable([
+    'product_id', 'user_id', 'boost_plan_id', 'status', 'starts_at', 'ends_at', 'expiring_notified_at',
+])]
 class Boost extends Model
 {
     public const STATUS_PENDING = 'pending';
@@ -23,6 +25,7 @@ class Boost extends Model
         return [
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
+            'expiring_notified_at' => 'datetime',
         ];
     }
 
