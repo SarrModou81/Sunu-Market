@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Boost;
 use App\Models\Message;
 use App\Models\Product;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
             'product' => Product::class,
             'user' => User::class,
             'message' => Message::class,
+            'boost' => Boost::class,
+            'subscription' => Subscription::class,
         ]);
     }
 }
