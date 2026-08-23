@@ -138,7 +138,7 @@ class _PublishProductScreenState extends State<PublishProductScreen> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<Category>(
-              initialValue: _category,
+              value: _category,
               decoration: const InputDecoration(labelText: 'Catégorie'),
               items: catalog.categories
                   .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
@@ -151,7 +151,7 @@ class _PublishProductScreenState extends State<PublishProductScreen> {
             if (_category != null && _category!.subcategories.isNotEmpty) ...[
               const SizedBox(height: 12),
               DropdownButtonFormField<Subcategory>(
-                initialValue: _subcategory,
+                value: _subcategory,
                 decoration: const InputDecoration(
                   labelText: 'Sous-catégorie (facultatif)',
                 ),
@@ -201,7 +201,7 @@ class _PublishProductScreenState extends State<PublishProductScreen> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              initialValue: _condition,
+              value: _condition,
               decoration: const InputDecoration(labelText: 'État'),
               items: productConditionLabels.entries
                   .map(
@@ -212,7 +212,7 @@ class _PublishProductScreenState extends State<PublishProductScreen> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<City>(
-              initialValue: _city,
+              value: _city,
               decoration: const InputDecoration(labelText: 'Ville'),
               items: catalog.cities
                   .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
@@ -225,7 +225,7 @@ class _PublishProductScreenState extends State<PublishProductScreen> {
             if (_city != null && _city!.neighborhoods.isNotEmpty) ...[
               const SizedBox(height: 12),
               DropdownButtonFormField<Neighborhood>(
-                initialValue: _neighborhood,
+                value: _neighborhood,
                 decoration: const InputDecoration(
                   labelText: 'Quartier (facultatif)',
                 ),

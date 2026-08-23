@@ -143,7 +143,7 @@ class _FiltersSheetState extends State<FiltersSheet> {
               ),
               const SizedBox(height: 8),
               DropdownButtonFormField<int>(
-                initialValue: _cityId,
+                value: _cityId,
                 decoration: const InputDecoration(
                   hintText: 'Toutes les villes',
                 ),
