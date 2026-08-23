@@ -47,6 +47,7 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('profile', [ProfileController::class, 'update']);
+    Route::post('profile', [ProfileController::class, 'update']); // POST + _method=PUT pour l'upload multipart (avatar)
     Route::post('profile/phone/change', [ProfileController::class, 'changePhone'])
         ->middleware('throttle:10,1');
     Route::delete('account', [ProfileController::class, 'destroy']);
@@ -65,6 +66,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('products/{product}', [ProductController::class, 'destroy']);
     Route::delete('products/{product}/images/{image}', [ProductImageController::class, 'destroy']);
     Route::post('products/{product}/images/{image}/primary', [ProductImageController::class, 'setPrimary']);
+    Route::post('products/{product}/reveal-phone', [ProductController::class, 'revealPhone'])
+        ->middleware('throttle:30,1');
 });
 
 Route::get('sellers/{seller}/reviews', [ReviewController::class, 'index']);

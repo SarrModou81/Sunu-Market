@@ -4,12 +4,25 @@ namespace Tests\Feature\Product;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ProductSearchTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_search_filters_by_seller(): void
+    {
+        $seller = User::factory()->create();
+        Product::factory()->create(['user_id' => $seller->id]);
+        Product::factory()->create();
+
+        $response = $this->getJson("/api/products?seller_id={$seller->id}");
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+    }
 
     public function test_search_filters_by_keyword(): void
     {
