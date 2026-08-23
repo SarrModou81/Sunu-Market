@@ -1,5 +1,7 @@
 # SunuMarket
 
+![Backend tests](https://github.com/SarrModou81/Sunu-Market/actions/workflows/backend-tests.yml/badge.svg)
+
 Marketplace mobile dédiée au Sénégal — publication gratuite, Boosts payants, abonnement Vendeur Pro, 0 % de commission sur les ventes.
 
 Cahier des charges de référence : [`docs/Cahier_des_charges_Marketplace_Senegal.pdf`](docs/Cahier_des_charges_Marketplace_Senegal.pdf).
@@ -58,3 +60,9 @@ cd mobile
 flutter pub get
 flutter run
 ```
+
+## Qualité, sécurité et CI/CD
+
+- `.github/workflows/backend-tests.yml` exécute à chaque push/PR : le contrôle de style (Laravel Pint) et la suite de tests complète contre une vraie base PostgreSQL.
+- Sécurité : validation stricte (Form Requests), autorisation par rôle (Policies + middleware `admin`), rate limiting global et par endpoint sensible, en-têtes de sécurité HTTP, whitelist des relations polymorphiques exposées à l'API (`Relation::enforceMorphMap`), webhooks de paiement vérifiés par signature HMAC et traités de façon idempotente.
+- Voir [`backend/DEPLOYMENT.md`](backend/DEPLOYMENT.md) pour la configuration de production : secrets, sauvegardes, tâches planifiées, monitoring et passage des paiements en production.
