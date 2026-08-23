@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-#[Fillable([
-    'reporter_id', 'reportable_type', 'reportable_id', 'reason', 'message',
-    'status', 'handled_by', 'resolution_note', 'handled_at',
-])]
 class Report extends Model
 {
+    protected $fillable = [
+        'reporter_id', 'reportable_type', 'reportable_id', 'reason', 'message',
+        'status', 'handled_by', 'resolution_note', 'handled_at',
+    ];
+
     public const STATUS_PENDING = 'pending';
 
     public const STATUS_REVIEWED = 'reviewed';

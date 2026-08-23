@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['conversation_id', 'sender_id', 'body', 'attachment_path', 'read_at'])]
 class Message extends Model
 {
+    protected $fillable = ['conversation_id', 'sender_id', 'body', 'attachment_path', 'read_at'];
+
     protected function casts(): array
     {
         return [

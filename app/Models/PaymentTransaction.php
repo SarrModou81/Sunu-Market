@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['payment_id', 'type', 'provider_reference', 'status', 'raw_payload', 'signature_valid', 'occurred_at'])]
 class PaymentTransaction extends Model
 {
+    protected $fillable = ['payment_id', 'type', 'provider_reference', 'status', 'raw_payload', 'signature_valid', 'occurred_at'];
+
     public const TYPE_CHECKOUT_INITIATED = 'checkout_initiated';
 
     public const TYPE_WEBHOOK = 'webhook';

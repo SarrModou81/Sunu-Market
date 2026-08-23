@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-#[Fillable([
-    'user_id', 'payable_type', 'payable_id', 'provider', 'amount', 'currency',
-    'reference', 'payer_phone', 'status', 'paid_at', 'meta',
-])]
 class Payment extends Model
 {
+    protected $fillable = [
+        'user_id', 'payable_type', 'payable_id', 'provider', 'amount', 'currency',
+        'reference', 'payer_phone', 'status', 'paid_at', 'meta',
+    ];
+
     use HasFactory;
 
     public const STATUS_PENDING = 'pending';

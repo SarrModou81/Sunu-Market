@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['author_id', 'seller_id', 'product_id', 'rating', 'comment', 'status'])]
 class Review extends Model
 {
+    protected $fillable = ['author_id', 'seller_id', 'product_id', 'rating', 'comment', 'status'];
+
     public const STATUS_VISIBLE = 'visible';
 
     public const STATUS_HIDDEN = 'hidden';

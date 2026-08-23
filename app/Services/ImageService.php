@@ -24,7 +24,7 @@ class ImageService
      */
     public function storeCompressed(UploadedFile $file, string $directory, string $disk = 'public', int $maxWidth = 1600, int $quality = 75): string
     {
-        $image = $this->manager->decode($file->getRealPath());
+        $image = $this->manager->read($file->getRealPath());
 
         if ($image->width() > $maxWidth) {
             $image->scale(width: $maxWidth);

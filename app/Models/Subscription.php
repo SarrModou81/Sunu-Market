@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-#[Fillable(['user_id', 'plan_code', 'price', 'status', 'starts_at', 'ends_at'])]
 class Subscription extends Model
 {
+    protected $fillable = ['user_id', 'plan_code', 'price', 'status', 'starts_at', 'ends_at'];
+
     public const PLAN_SELLER_PRO_MONTHLY = 'seller_pro_monthly';
 
     public const STATUS_PENDING = 'pending';

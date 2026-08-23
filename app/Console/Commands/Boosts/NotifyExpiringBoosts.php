@@ -4,14 +4,14 @@ namespace App\Console\Commands\Boosts;
 
 use App\Models\Boost;
 use App\Notifications\BoostExpiringSoonNotification;
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('boosts:notify-expiring')]
-#[Description('Notifie les vendeurs dont un Boost actif se termine dans moins de 2 heures.')]
 class NotifyExpiringBoosts extends Command
 {
+    protected $signature = 'boosts:notify-expiring';
+
+    protected $description = 'Notifie les vendeurs dont un Boost actif se termine dans moins de 2 heures.';
+
     private const WARNING_WINDOW_HOURS = 2;
 
     public function handle(): int

@@ -3,14 +3,14 @@
 namespace App\Console\Commands\Subscriptions;
 
 use App\Models\Subscription;
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('subscriptions:expire')]
-#[Description('Expire les abonnements Vendeur Pro arrivés à échéance et repasse le vendeur en compte Standard.')]
 class ExpireSubscriptions extends Command
 {
+    protected $signature = 'subscriptions:expire';
+
+    protected $description = 'Expire les abonnements Vendeur Pro arrivés à échéance et repasse le vendeur en compte Standard.';
+
     public function handle(): int
     {
         $expired = Subscription::query()

@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-#[Fillable([
-    'product_id', 'user_id', 'boost_plan_id', 'status', 'starts_at', 'ends_at', 'expiring_notified_at',
-])]
 class Boost extends Model
 {
+    protected $fillable = [
+        'product_id', 'user_id', 'boost_plan_id', 'status', 'starts_at', 'ends_at', 'expiring_notified_at',
+    ];
+
     public const STATUS_PENDING = 'pending';
 
     public const STATUS_ACTIVE = 'active';
