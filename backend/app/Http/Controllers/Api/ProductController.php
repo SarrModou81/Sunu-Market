@@ -24,7 +24,7 @@ class ProductController extends Controller
     {
         $filters = $request->only([
             'q', 'category_id', 'subcategory_id', 'condition', 'city_id', 'neighborhood_id',
-            'delivery_available', 'min_price', 'max_price', 'sort',
+            'delivery_available', 'min_price', 'max_price', 'sort', 'seller_id',
         ]);
 
         $perPage = min((int) $request->integer('per_page', 20), 50);
@@ -113,5 +113,26 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(['message' => 'Annonce supprimée.']);
+    }
+
+    /**
+     * Révèle le numéro de téléphone du vendeur (action "Appeler", section 8 du
+     * cahier des charges). Le numéro n'est jamais inclus dans ProductResource
+     * afin d'éviter le moissonnage automatisé ; il n'est communiqué qu'à la
+     * demande explicite d'un utilisateur connecté, ce qui incrémente le
+     * compteur de contacts de l'annonce et du profil vendeur.
+     */
+    public function revealPhone(Request $request, Product $product): JsonResponse
+    {
+        if ($product->status !== Product::STATUS_ACTIVE) {
+            abort(404);
+        }
+
+        if ($request->user()->id !== $product->user_id) {
+            $product->increment('contacts_count');
+            $product->user->sellerProfile()->increment('contacts_count');
+        }
+
+        return response()->json(['data' => ['phone' => $product->user->phone]]);
     }
 }

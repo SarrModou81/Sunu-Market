@@ -212,4 +212,36 @@ class ProductCrudTest extends TestCase
         $response->assertOk();
         $response->assertJsonCount(2, 'data');
     }
+
+    public function test_authenticated_buyer_can_reveal_seller_phone_and_increments_contacts(): void
+    {
+        $seller = User::factory()->create(['phone' => '+221771234567']);
+        $seller->sellerProfile()->create();
+        $product = Product::factory()->create(['user_id' => $seller->id, 'contacts_count' => 0]);
+        $this->authenticatedUser();
+
+        $response = $this->postJson("/api/products/{$product->id}/reveal-phone");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.phone', '+221771234567');
+        $this->assertSame(1, $product->fresh()->contacts_count);
+        $this->assertSame(1, $seller->sellerProfile->fresh()->contacts_count);
+    }
+
+    public function test_owner_revealing_own_phone_does_not_increment_contacts(): void
+    {
+        $user = $this->authenticatedUser();
+        $product = Product::factory()->create(['user_id' => $user->id, 'contacts_count' => 0]);
+
+        $this->postJson("/api/products/{$product->id}/reveal-phone")->assertOk();
+
+        $this->assertSame(0, $product->fresh()->contacts_count);
+    }
+
+    public function test_guest_cannot_reveal_phone(): void
+    {
+        $product = Product::factory()->create();
+
+        $this->postJson("/api/products/{$product->id}/reveal-phone")->assertStatus(401);
+    }
 }
