@@ -4,15 +4,20 @@ use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\OtpController;
 use App\Http\Controllers\Api\Auth\ProfileController;
+use App\Http\Controllers\Api\BoostController;
+use App\Http\Controllers\Api\BoostPlanController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\ConversationController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductImageController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\SubscriptionController;
+use App\Http\Controllers\Api\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -75,6 +80,29 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('notifications', [NotificationController::class, 'index']);
     Route::post('notifications/{notification}/read', [NotificationController::class, 'markRead']);
     Route::post('notifications/read-all', [NotificationController::class, 'markAllRead']);
+});
+
+Route::get('boost-plans', [BoostPlanController::class, 'index']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('products/{product}/boost', [BoostController::class, 'store'])
+        ->middleware('throttle:10,1');
+    Route::post('subscriptions/pro', [SubscriptionController::class, 'store'])
+        ->middleware('throttle:10,1');
+
+    Route::get('payments', [PaymentController::class, 'index']);
+    Route::get('payments/{payment}', [PaymentController::class, 'show']);
+});
+
+// Callback de simulation (développement/tests uniquement, voir PaymentController::fakeComplete).
+Route::get('payments/{payment}/fake-complete', [PaymentController::class, 'fakeComplete'])
+    ->name('payments.fake-complete');
+
+// Webhooks fournisseurs de paiement : non authentifiés (Sanctum), l'authenticité est
+// garantie par la vérification de signature effectuée dans WebhookController.
+Route::middleware('throttle:120,1')->group(function () {
+    Route::post('webhooks/wave', [WebhookController::class, 'wave'])->name('webhooks.wave');
+    Route::post('webhooks/orange-money', [WebhookController::class, 'orangeMoney'])->name('webhooks.orange-money');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
