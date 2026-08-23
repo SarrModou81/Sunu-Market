@@ -54,6 +54,10 @@ class ProductSearchService
             });
         }
 
+        if (! empty($filters['seller_id'])) {
+            $query->where('user_id', $filters['seller_id']);
+        }
+
         if (! empty($filters['category_id'])) {
             $query->where('category_id', $filters['category_id']);
         }
