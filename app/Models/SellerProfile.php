@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable([
     'user_id', 'shop_name', 'description', 'seller_type', 'pro_started_at', 'pro_expires_at',
     'badge_verified', 'auto_reply_enabled', 'auto_reply_message',
+    'views_count', 'contacts_count', 'rating_average', 'rating_count',
 ])]
 class SellerProfile extends Model
 {

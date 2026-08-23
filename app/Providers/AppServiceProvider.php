@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Message;
+use App\Models\Product;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Alias courts pour les relations polymorphiques (reports, payments...) :
+        // évite d'exposer/accepter des noms de classe PHP complets via l'API.
+        Relation::enforceMorphMap([
+            'product' => Product::class,
+            'user' => User::class,
+            'message' => Message::class,
+        ]);
     }
 }
