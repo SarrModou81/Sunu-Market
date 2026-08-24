@@ -8,7 +8,9 @@ plugins {
 android {
     namespace = "sn.sunumarket.sunumarket"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Version la plus haute requise par les plugins (flutter_secure_storage,
+    // image_picker, sqflite, etc.) ; flutter.ndkVersion (26.x) est trop bas.
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
