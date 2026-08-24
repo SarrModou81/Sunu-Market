@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SellerProfile extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id', 'shop_name', 'description', 'seller_type', 'pro_started_at', 'pro_expires_at',
         'badge_verified', 'auto_reply_enabled', 'auto_reply_message',
