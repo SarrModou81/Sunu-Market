@@ -23,6 +23,7 @@ class PaymentGatewayFactory
         return match ($provider) {
             Payment::PROVIDER_WAVE => app(WaveGateway::class),
             Payment::PROVIDER_ORANGE_MONEY => app(OrangeMoneyGateway::class),
+            Payment::PROVIDER_PAYTECH => app(PaytechGateway::class),
             default => throw new InvalidArgumentException("Fournisseur de paiement inconnu : {$provider}"),
         };
     }

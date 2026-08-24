@@ -27,6 +27,11 @@ class WebhookController extends Controller
         return $this->handle(Payment::PROVIDER_ORANGE_MONEY, $request);
     }
 
+    public function paytech(Request $request): JsonResponse
+    {
+        return $this->handle(Payment::PROVIDER_PAYTECH, $request);
+    }
+
     private function handle(string $provider, Request $request): JsonResponse
     {
         $gateway = $this->gatewayFactory->make($provider);

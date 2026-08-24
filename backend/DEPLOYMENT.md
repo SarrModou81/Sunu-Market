@@ -66,15 +66,21 @@ exécuter un worker (`php artisan queue:work`) supervisé (systemd/Supervisor).
 `PaymentGatewayFactory` refuse explicitement ce pilote lorsque `APP_ENV=production`.
 Avant la mise en production réelle :
 
-1. Obtenir des comptes marchands Wave et Orange Money, renseigner leurs identifiants
-   (`WAVE_API_KEY`, `ORANGE_MONEY_CLIENT_ID`/`CLIENT_SECRET`/`MERCHANT_KEY`) et secrets
-   de webhook (`WAVE_WEBHOOK_SECRET`, `ORANGE_MONEY_WEBHOOK_SECRET`).
-2. Valider `App\Services\Payments\WaveGateway` et `OrangeMoneyGateway` contre
-   l'environnement sandbox officiel de chaque fournisseur — leur implémentation suit
-   la structure publique documentée de ces API mais n'a pas pu être testée contre de
-   vrais comptes marchands dans cet environnement de développement.
-3. Configurer les URLs de webhook (`/api/webhooks/wave`, `/api/webhooks/orange-money`)
-   côté tableau de bord marchand de chaque fournisseur.
+1. Obtenir des comptes marchands (Wave, Orange Money, et/ou PayTech qui agrège les deux
+   plus la carte bancaire derrière une seule API), renseigner leurs identifiants
+   (`WAVE_API_KEY`, `ORANGE_MONEY_CLIENT_ID`/`CLIENT_SECRET`/`MERCHANT_KEY`,
+   `PAYTECH_API_KEY`/`PAYTECH_API_SECRET`) et secrets de webhook (`WAVE_WEBHOOK_SECRET`,
+   `ORANGE_MONEY_WEBHOOK_SECRET` — PayTech n'utilise pas de secret séparé, sa vérification
+   IPN repose sur le hash SHA-256 de `PAYTECH_API_KEY`/`PAYTECH_API_SECRET` eux-mêmes).
+2. Valider `App\Services\Payments\WaveGateway`, `OrangeMoneyGateway` et `PaytechGateway`
+   contre l'environnement sandbox officiel de chaque fournisseur — leur implémentation
+   suit la structure publique documentée de ces API mais n'a pas pu être testée contre de
+   vrais comptes marchands dans cet environnement de développement. Pour PayTech en
+   particulier, faire un paiement test réel (`PAYTECH_ENV=test`) et comparer le payload
+   IPN effectivement reçu à `PaytechGateway::parseWebhook()` avant la mise en production.
+3. Configurer les URLs de webhook (`/api/webhooks/wave`, `/api/webhooks/orange-money`,
+   `/api/webhooks/paytech`) côté tableau de bord marchand de chaque fournisseur, et
+   `PAYTECH_IPN_URL` côté `.env` avec la même URL publique HTTPS.
 
 ## CI/CD
 

@@ -31,6 +31,8 @@ class Payment extends Model
 
     public const PROVIDER_ORANGE_MONEY = 'orange_money';
 
+    public const PROVIDER_PAYTECH = 'paytech';
+
     protected function casts(): array
     {
         return [
