@@ -36,9 +36,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         purpose: 'reset_password',
       );
       if (!mounted) return;
-      context.push(
-        '/otp-verify?phone=${_phoneController.text}&purpose=reset_password',
-      );
+      context.push('/reset-password-otp?phone=${_phoneController.text}');
     } on ApiException catch (e) {
       setState(() => _error = e.errorFor('phone') ?? e.message);
     } finally {

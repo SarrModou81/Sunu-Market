@@ -3,17 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/api/api_exception.dart';
+import '../../models/city.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/catalog_provider.dart';
 
+/// Dernière étape de l'inscription : le numéro est déjà vérifié par Firebase,
+/// il ne reste plus qu'à renseigner le profil (aucun mot de passe requis).
 class RegisterDetailsScreen extends StatefulWidget {
-  const RegisterDetailsScreen({
-    super.key,
-    required this.phone,
-    required this.code,
-  });
-
-  final String phone;
-  final String code;
+  const RegisterDetailsScreen({super.key});
 
   @override
   State<RegisterDetailsScreen> createState() => _RegisterDetailsScreenState();
@@ -23,17 +20,24 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _passwordConfirmController = TextEditingController();
+  final _emailController = TextEditingController();
+  City? _city;
   bool _loading = false;
   String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => context.read<CatalogProvider>().load(),
+    );
+  }
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _passwordController.dispose();
-    _passwordConfirmController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
@@ -46,13 +50,11 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
     });
 
     try {
-      await context.read<AuthProvider>().register(
-        phone: widget.phone,
-        code: widget.code,
-        password: _passwordController.text,
-        passwordConfirmation: _passwordConfirmController.text,
+      await context.read<AuthProvider>().completeFirebaseRegistration(
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
+        email: _emailController.text,
+        cityId: _city?.id,
       );
       if (!mounted) return;
       context.go('/home');
@@ -65,6 +67,8 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final catalog = context.watch<CatalogProvider>();
+
     return Scaffold(
       appBar: AppBar(title: const Text('Finaliser mon compte')),
       body: SingleChildScrollView(
@@ -93,23 +97,22 @@ class _RegisterDetailsScreenState extends State<RegisterDetailsScreen> {
               ),
               const SizedBox(height: 12),
               TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Mot de passe'),
-                validator: (v) => (v == null || v.length < 8)
-                    ? 'Au moins 8 caractères'
-                    : null,
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  labelText: 'Email (facultatif)',
+                ),
               ),
               const SizedBox(height: 12),
-              TextFormField(
-                controller: _passwordConfirmController,
-                obscureText: true,
+              DropdownButtonFormField<City>(
+                value: _city,
                 decoration: const InputDecoration(
-                  labelText: 'Confirmer le mot de passe',
+                  labelText: 'Ville (facultatif)',
                 ),
-                validator: (v) => v != _passwordController.text
-                    ? 'Les mots de passe ne correspondent pas'
-                    : null,
+                items: catalog.cities
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
+                    .toList(),
+                onChanged: (value) => setState(() => _city = value),
               ),
               const SizedBox(height: 24),
               ElevatedButton(

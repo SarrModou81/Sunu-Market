@@ -16,37 +16,6 @@ class AuthService {
     );
   }
 
-  /// Retourne le jeton d'authentification et le profil créé.
-  Future<(String token, AppUser user)> register({
-    required String phone,
-    required String code,
-    required String password,
-    required String passwordConfirmation,
-    required String firstName,
-    required String lastName,
-    String? email,
-    int? cityId,
-  }) async {
-    final response = await _client.post(
-      '/auth/register',
-      data: {
-        'phone': phone,
-        'code': code,
-        'password': password,
-        'password_confirmation': passwordConfirmation,
-        'first_name': firstName,
-        'last_name': lastName,
-        if (email != null && email.isNotEmpty) 'email': email,
-        if (cityId != null) 'city_id': cityId,
-      },
-    );
-
-    return (
-      response.data['token'] as String,
-      AppUser.fromJson(response.data['user'] as Map<String, dynamic>),
-    );
-  }
-
   Future<(String token, AppUser user)> login({
     required String phone,
     required String password,
@@ -54,21 +23,6 @@ class AuthService {
     final response = await _client.post(
       '/auth/login',
       data: {'phone': phone, 'password': password},
-    );
-
-    return (
-      response.data['token'] as String,
-      AppUser.fromJson(response.data['user'] as Map<String, dynamic>),
-    );
-  }
-
-  Future<(String token, AppUser user)> loginWithOtp({
-    required String phone,
-    required String code,
-  }) async {
-    final response = await _client.post(
-      '/auth/otp/login',
-      data: {'phone': phone, 'code': code},
     );
 
     return (
@@ -91,6 +45,34 @@ class AuthService {
         'password': password,
         'password_confirmation': passwordConfirmation,
       },
+    );
+  }
+
+  /// Connecte ou inscrit l'utilisateur à partir d'un jeton Firebase déjà
+  /// vérifié côté client. [profile] n'est utile que si le numéro est
+  /// nouveau (inscription) : first_name/last_name au minimum.
+  Future<(String token, AppUser user, bool isNew)> loginOrRegisterWithFirebase({
+    required String idToken,
+    String? firstName,
+    String? lastName,
+    String? email,
+    int? cityId,
+  }) async {
+    final response = await _client.post(
+      '/auth/firebase',
+      data: {
+        'id_token': idToken,
+        if (firstName != null && firstName.isNotEmpty) 'first_name': firstName,
+        if (lastName != null && lastName.isNotEmpty) 'last_name': lastName,
+        if (email != null && email.isNotEmpty) 'email': email,
+        if (cityId != null) 'city_id': cityId,
+      },
+    );
+
+    return (
+      response.data['token'] as String,
+      AppUser.fromJson(response.data['user'] as Map<String, dynamic>),
+      response.data['is_new'] as bool,
     );
   }
 

@@ -74,8 +74,9 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
       _load();
     } on ApiException catch (e) {
       if (mounted)
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message)));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 

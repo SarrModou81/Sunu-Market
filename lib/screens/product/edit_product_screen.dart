@@ -68,8 +68,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       );
       if (!mounted) return;
       setState(() => _product = updated);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Annonce mise à jour.')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Annonce mise à jour.')));
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } finally {
@@ -87,8 +88,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       if (mounted) setState(() => _product = updated);
     } on ApiException catch (e) {
       if (mounted)
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message)));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -147,8 +149,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       if (mounted) context.pop();
     } on ApiException catch (e) {
       if (mounted)
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.message)));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 

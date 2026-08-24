@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuthException;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -10,11 +11,11 @@ class OtpVerifyScreen extends StatefulWidget {
   const OtpVerifyScreen({
     super.key,
     required this.phone,
-    required this.purpose,
+    required this.verificationId,
   });
 
   final String phone;
-  final String purpose;
+  final String verificationId;
 
   @override
   State<OtpVerifyScreen> createState() => _OtpVerifyScreenState();
@@ -44,24 +45,22 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
     });
 
     try {
-      switch (widget.purpose) {
-        case 'register':
-          if (!mounted) return;
-          context.push('/register-details?phone=${widget.phone}&code=$code');
-          break;
-        case 'login':
-          await context.read<AuthProvider>().loginWithOtp(
-            phone: widget.phone,
+      final isKnownUser = await context
+          .read<AuthProvider>()
+          .confirmFirebaseCode(
+            verificationId: widget.verificationId,
             code: code,
           );
-          if (!mounted) return;
-          context.go('/home');
-          break;
-        case 'reset_password':
-          if (!mounted) return;
-          context.push('/reset-password?phone=${widget.phone}&code=$code');
-          break;
+
+      if (!mounted) return;
+
+      if (isKnownUser) {
+        context.go('/home');
+      } else {
+        context.push('/register-details');
       }
+    } on FirebaseAuthException catch (e) {
+      setState(() => _error = e.message ?? 'Code invalide ou expiré.');
     } on ApiException catch (e) {
       setState(() => _error = e.message);
     } finally {
@@ -79,7 +78,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Entrez le code envoyé au +221 ${widget.phone}',
+              'Entrez le code envoyé au ${widget.phone}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),

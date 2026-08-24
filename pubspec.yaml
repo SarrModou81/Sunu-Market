@@ -40,6 +40,10 @@ dependencies:
   # État vide/chargement/erreur réutilisables
   shared_preferences: ^2.3.3
 
+  # Authentification par téléphone (envoi du SMS + vérification du code)
+  firebase_core: ^4.14.0
+  firebase_auth: ^6.6.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

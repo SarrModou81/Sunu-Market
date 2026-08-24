@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "296267431463",
+    "project_id": "sunumarket-d3ab2",
+    "storage_bucket": "sunumarket-d3ab2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296267431463:android:d989b3abeca57ebf675802",
+        "android_client_info": {
+          "package_name": "sn.sunumarket.sunumarket"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDggx4pP4zlXxamrUv7mvD_CPCTbPfll2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

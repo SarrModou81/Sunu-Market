@@ -38,9 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordController.text,
       );
       if (!mounted) return;
-      final redirect = GoRouterState.of(context)
-          .uri
-          .queryParameters['redirect'];
+      final redirect = GoRouterState.of(
+        context,
+      ).uri.queryParameters['redirect'];
       context.go(redirect ?? '/home');
     } on ApiException catch (e) {
       setState(() => _error = e.message);
