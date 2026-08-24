@@ -13,7 +13,12 @@ class ApiClient {
           baseUrl: AppConfig.apiBaseUrl,
           connectTimeout: const Duration(seconds: 15),
           receiveTimeout: const Duration(seconds: 15),
-          headers: {'Accept': 'application/json'},
+          headers: {
+            'Accept': 'application/json',
+            // Évite la page d'avertissement HTML que les tunnels ngrok
+            // gratuits renvoient au premier appel d'un nouveau client.
+            'ngrok-skip-browser-warning': 'true',
+          },
         ),
       ) {
     dio.interceptors.add(

@@ -5,8 +5,9 @@ class AppConfig {
 
   static const apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    // 10.0.2.2 = alias de l'hôte depuis l'émulateur Android ; utiliser
-    // localhost sur iOS Simulator ou l'IP de la machine sur un vrai appareil.
-    defaultValue: 'http://10.0.2.2:8000/api',
+    // Tunnel ngrok exposant `php artisan serve` en local, pour un accès
+    // depuis un vrai appareil Android (10.0.2.2 ne fonctionne que sur
+    // l'émulateur). Remplacer par l'URL ngrok active si elle change.
+    defaultValue: 'https://patchwork-resupply-drastic.ngrok-free.dev/api',
   );
 }
