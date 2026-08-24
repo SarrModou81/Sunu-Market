@@ -2,6 +2,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // Miroir officiel Google de Maven Central : utile quand
+        // repo.maven.apache.org est injoignable (DNS/réseau) alors que
+        // l'infrastructure Google (dl.google.com) fonctionne, elle.
+        maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/") }
     }
 }
 
