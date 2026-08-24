@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Exceptions\FirebaseAuthException;
 use App\Exceptions\OtpException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\FirebaseAuthRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
@@ -74,6 +76,32 @@ class AuthController extends Controller
             'user' => new UserResource($user->load(['profile', 'sellerProfile'])),
             'token' => $token->plainTextToken,
         ]);
+    }
+
+    public function firebase(FirebaseAuthRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->authService->loginOrRegisterWithFirebase($request->string('id_token'), [
+                'first_name' => $request->string('first_name')->value() ?: null,
+                'last_name' => $request->string('last_name')->value() ?: null,
+                'email' => $request->string('email')->value() ?: null,
+                'city_id' => $request->integer('city_id') ?: null,
+            ]);
+        } catch (FirebaseAuthException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
+
+        if (! $result) {
+            return response()->json(['message' => 'Compte introuvable ou suspendu.'], 401);
+        }
+
+        $token = $this->authService->issueToken($result['user']);
+
+        return response()->json([
+            'user' => new UserResource($result['user']->load(['profile', 'sellerProfile'])),
+            'token' => $token->plainTextToken,
+            'is_new' => $result['isNew'],
+        ], $result['isNew'] ? 201 : 200);
     }
 
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
