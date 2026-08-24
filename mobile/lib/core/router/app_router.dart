@@ -7,6 +7,7 @@ import '../../screens/auth/login_screen.dart';
 import '../../screens/auth/otp_verify_screen.dart';
 import '../../screens/auth/phone_entry_screen.dart';
 import '../../screens/auth/register_details_screen.dart';
+import '../../screens/auth/reset_password_otp_screen.dart';
 import '../../screens/auth/reset_password_screen.dart';
 import '../../screens/favorites/favorites_screen.dart';
 import '../../screens/home/home_shell.dart';
@@ -89,6 +90,11 @@ GoRouter buildRouter(AuthProvider authProvider) {
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
+        path: '/reset-password-otp',
+        builder: (context, state) =>
+            ResetPasswordOtpScreen(phone: state.uri.queryParameters['phone']!),
+      ),
+      GoRoute(
         path: '/reset-password',
         builder: (context, state) => ResetPasswordScreen(
           phone: state.uri.queryParameters['phone']!,
@@ -97,17 +103,17 @@ GoRouter buildRouter(AuthProvider authProvider) {
       ),
       GoRoute(
         path: '/otp-verify',
-        builder: (context, state) => OtpVerifyScreen(
-          phone: state.uri.queryParameters['phone']!,
-          purpose: state.uri.queryParameters['purpose']!,
-        ),
+        builder: (context, state) {
+          final extra = state.extra! as Map<String, dynamic>;
+          return OtpVerifyScreen(
+            phone: extra['phone'] as String,
+            verificationId: extra['verificationId'] as String,
+          );
+        },
       ),
       GoRoute(
         path: '/register-details',
-        builder: (context, state) => RegisterDetailsScreen(
-          phone: state.uri.queryParameters['phone']!,
-          code: state.uri.queryParameters['code']!,
-        ),
+        builder: (context, state) => const RegisterDetailsScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) =>

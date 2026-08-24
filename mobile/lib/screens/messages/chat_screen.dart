@@ -73,8 +73,9 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Message non envoyé.')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Message non envoyé.')));
       }
     } finally {
       if (mounted) setState(() => _sending = false);
