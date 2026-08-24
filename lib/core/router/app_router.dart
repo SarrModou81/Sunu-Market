@@ -43,7 +43,13 @@ GoRouter buildRouter(AuthProvider authProvider) {
       final loggedIn = authProvider.isAuthenticated;
       final path = state.matchedLocation;
 
-      if (path == '/splash') return null;
+      if (authProvider.status == AuthStatus.unknown) {
+        return null;
+      }
+
+      if (path == '/splash') {
+        return loggedIn ? '/home' : '/login';
+      }
 
       final needsAuth = _authRequiredPaths.any((p) => path.startsWith(p));
       final isAuthScreen =
@@ -52,8 +58,6 @@ GoRouter buildRouter(AuthProvider authProvider) {
           path.startsWith('/forgot-password') ||
           path.startsWith('/reset-password') ||
           path.startsWith('/otp-verify');
-
-      if (authProvider.status == AuthStatus.unknown) return null;
 
       if (needsAuth && !loggedIn) {
         return '/login?redirect=${Uri.encodeComponent(path)}';
