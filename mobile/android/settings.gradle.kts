@@ -20,7 +20,10 @@ pluginManagement {
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
     id("com.android.application") version "8.7.3" apply false
-    id("org.jetbrains.kotlin.android") version "2.1.0" apply false
+    // 2.1.0 ne peut pas lire les métadonnées Kotlin (2.3.0) des artefacts natifs
+    // de firebase-auth 24.2.0+ ("Module was compiled with an incompatible
+    // version of Kotlin"). 2.3.21 reste compatible avec Gradle 8.12 / AGP 8.7.3.
+    id("org.jetbrains.kotlin.android") version "2.3.21" apply false
     id("com.google.gms.google-services") version "4.4.2" apply false
 }
 
