@@ -36,6 +36,8 @@ Route::prefix('auth')->group(function () {
         ->middleware('throttle:10,1');
     Route::post('login', [AuthController::class, 'login'])
         ->middleware('throttle:10,1');
+    Route::post('firebase', [AuthController::class, 'firebase'])
+        ->middleware('throttle:10,1');
     Route::post('password/reset', [AuthController::class, 'resetPassword'])
         ->middleware('throttle:10,1');
 

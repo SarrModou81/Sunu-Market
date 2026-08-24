@@ -82,6 +82,24 @@ Avant la mise en production réelle :
    `/api/webhooks/paytech`) côté tableau de bord marchand de chaque fournisseur, et
    `PAYTECH_IPN_URL` côté `.env` avec la même URL publique HTTPS.
 
+## Authentification par téléphone — Firebase
+
+`FIREBASE_DRIVER=fake` (par défaut) doit être remplacé par `FIREBASE_DRIVER=kreait` en
+production ; `FirebaseVerifierFactory` refuse explicitement le pilote de test lorsque
+`APP_ENV=production`, comme pour les paiements.
+
+1. Créer un projet sur [console.firebase.google.com](https://console.firebase.google.com),
+   activer le fournisseur **Authentication > Sign-in method > Téléphone**.
+2. Ajouter l'app Android au projet Firebase avec le package `sn.sunumarket.sunumarket` et
+   les empreintes SHA-1/SHA-256 du certificat de signature (debug et release), requises
+   par Firebase pour la vérification silencieuse (Play Integrity) côté mobile.
+3. Télécharger `google-services.json` et le placer dans `mobile/android/app/`.
+4. Renseigner uniquement `FIREBASE_PROJECT_ID` côté backend (l'ID du projet, visible dans
+   Paramètres du projet) — aucune clé de compte de service n'est nécessaire : la
+   vérification du jeton se fait contre les clés publiques Google du projet.
+5. Faire une vraie vérification par téléphone depuis l'app pour confirmer que
+   `POST /api/auth/firebase` accepte le jeton produit par le SDK Firebase mobile.
+
 ## CI/CD
 
 Le workflow GitHub Actions `.github/workflows/backend-tests.yml` (à la racine du
