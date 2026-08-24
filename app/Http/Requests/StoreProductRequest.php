@@ -63,7 +63,7 @@ class StoreProductRequest extends FormRequest
                 }
             }
 
-            if (! $this->boolean('is_draft') && count($this->file('images', [])) < 1) {
+            if (! $this->boolean('is_draft') && count($this->file('images') ?? []) < 1) {
                 $validator->errors()->add('images', 'Au moins une photo est requise pour publier une annonce (ou enregistrez-la en brouillon).');
             }
 
