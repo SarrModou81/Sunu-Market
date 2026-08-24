@@ -21,7 +21,7 @@ class CreateBoostPaymentRequest extends FormRequest
     {
         return [
             'boost_plan_id' => ['required', 'integer', Rule::exists('boost_plans', 'id')->where('is_active', true)],
-            'provider' => ['required', Rule::in([Payment::PROVIDER_WAVE, Payment::PROVIDER_ORANGE_MONEY])],
+            'provider' => ['required', Rule::in([Payment::PROVIDER_WAVE, Payment::PROVIDER_ORANGE_MONEY, Payment::PROVIDER_PAYTECH])],
         ];
     }
 }

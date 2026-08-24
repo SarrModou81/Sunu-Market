@@ -113,6 +113,7 @@ Route::get('payments/{payment}/fake-complete', [PaymentController::class, 'fakeC
 Route::middleware('throttle:120,1')->group(function () {
     Route::post('webhooks/wave', [WebhookController::class, 'wave'])->name('webhooks.wave');
     Route::post('webhooks/orange-money', [WebhookController::class, 'orangeMoney'])->name('webhooks.orange-money');
+    Route::post('webhooks/paytech', [WebhookController::class, 'paytech'])->name('webhooks.paytech');
 });
 
 Route::middleware(['auth:sanctum', 'admin:moderator'])->prefix('admin')->group(function () {

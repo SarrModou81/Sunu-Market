@@ -21,6 +21,16 @@ return [
         'webhook_secret' => env('ORANGE_MONEY_WEBHOOK_SECRET'),
     ],
 
+    'paytech' => [
+        'base_url' => env('PAYTECH_API_BASE_URL', 'https://paytech.sn'),
+        'api_key' => env('PAYTECH_API_KEY'),
+        'api_secret' => env('PAYTECH_API_SECRET'),
+        // "test" ou "prod" — PayTech simule le paiement sans mouvement d'argent réel en mode test.
+        'env' => env('PAYTECH_ENV', 'test'),
+        // URL HTTPS publique de routes/api.php: webhooks/paytech (ex. via le tunnel ngrok en dev).
+        'ipn_url' => env('PAYTECH_IPN_URL'),
+    ],
+
     'boost_prices' => [
         '72h' => (int) env('BOOST_PRICE_72H', 500),
         '7d' => (int) env('BOOST_PRICE_7D', 1000),

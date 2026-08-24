@@ -20,7 +20,7 @@ class CreateSubscriptionPaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'provider' => ['required', Rule::in([Payment::PROVIDER_WAVE, Payment::PROVIDER_ORANGE_MONEY])],
+            'provider' => ['required', Rule::in([Payment::PROVIDER_WAVE, Payment::PROVIDER_ORANGE_MONEY, Payment::PROVIDER_PAYTECH])],
         ];
     }
 }
