@@ -12,11 +12,11 @@ pluginManagement {
 
     repositories {
         google()
-        mavenCentral()
-        // Miroir officiel Google de Maven Central : utile quand
-        // repo.maven.apache.org est injoignable (DNS/réseau) alors que
-        // l'infrastructure Google (dl.google.com) fonctionne, elle.
+        // Miroir officiel Google de Maven Central en premier : repo.maven.apache.org
+        // s'est révélé injoignable (DNS/réseau) par intermittence sur certains
+        // réseaux, alors que l'infrastructure Google (dl.google.com) fonctionne.
         maven { url = uri("https://maven-central.storage-download.googleapis.com/maven2/") }
+        mavenCentral()
         gradlePluginPortal()
     }
 }
